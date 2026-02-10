@@ -1,0 +1,58 @@
+services:
+  vault0:
+    image: hashicorp/vault-enterprise:1.21.3-ent
+    container_name: vault0
+    hostname: vault0
+    ports:
+      - "8200:8200"
+      - "8201:8201"
+    environment:
+      - VAULT_LICENSE=${VAULT_LICENSE}
+      - VAULT_ADDR=http://127.0.0.1:8200
+    volumes:
+      - ./config/vault0.hcl:/vault/config/vault.hcl
+      - ./data/vault0:/vault/data
+    networks:
+      - vault
+    cap_add:
+      - IPC_LOCK
+    command: server
+  vault1:
+    image: hashicorp/vault-enterprise:1.21.3-ent
+    container_name: vault1
+    hostname: vault1
+    ports:
+      - "8202:8200"
+      - "8203:8201"
+    environment:
+      - VAULT_LICENSE=${VAULT_LICENSE}
+      - VAULT_ADDR=http://127.0.0.1:8200
+    volumes:
+      - ./config/vault1.hcl:/vault/config/vault.hcl
+      - ./data/vault1:/vault/data
+    networks:
+      - vault
+    cap_add:
+      - IPC_LOCK
+    command: server
+  vault2:
+    image: hashicorp/vault-enterprise:1.21.3-ent
+    container_name: vault2
+    hostname: vault2
+    ports:
+      - "8204:8200"
+      - "8205:8201"
+    environment:
+      - VAULT_LICENSE=${VAULT_LICENSE}
+      - VAULT_ADDR=http://127.0.0.1:8200
+    volumes:
+      - ./config/vault2.hcl:/vault/config/vault.hcl
+      - ./data/vault2:/vault/data
+    networks:
+      - vault
+    cap_add:
+      - IPC_LOCK
+    command: server
+networks:
+  vault:
+    driver: bridge
